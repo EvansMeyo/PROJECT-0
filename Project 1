@@ -1,0 +1,115 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "6a25ed0d-abe7-4eb6-bd58-cfbc463472a2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "from sqlalchemy import create_engine"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "44244e87-8173-445e-af9a-2ae9535bc19a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Filepath of the CSV file\n",
+    "\n",
+    "csv_file_path = r\"C:\\Users\\Admin\\Desktop\\Analysts\\CovidVaccinations.csv\"\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "dbe3dd1c-beec-4b3f-a5c6-ae28afa64480",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# MySQL database connection details\n",
+    "db_user = 'root'\n",
+    "db_password = '1234'\n",
+    "db_host = 'localhost'  # or the IP address of your database server\n",
+    "db_name = 'covid_data'\n",
+    "db_table = 'cvaccinations'"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "e583b87b-f071-45eb-a574-fcfa263d0c0f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Read the CSV file into a DataFrame\n",
+    "df = pd.read_csv(csv_file_path)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "95108e7b-20a9-42f5-b5f7-4fb05566e5a6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Create a connection to the MySQL database\n",
+    "engine = create_engine(f'mysql+mysqlconnector://{db_user}:{db_password}@{db_host}/{db_name}')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "26252db7-aff8-492a-acf8-ee436cc1f9ff",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Data transferred successfully!\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Write the DataFrame to the MySQL table\n",
+    "# The 'if_exists' parameter can be 'fail', 'replace', or 'append'\n",
+    "df.to_sql(db_table, con=engine, if_exists='replace', index=False)\n",
+    "\n",
+    "print(\"Data transferred successfully!\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ceeb2174-84e9-453c-b1f8-23ed0cd01ca6",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.7"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
